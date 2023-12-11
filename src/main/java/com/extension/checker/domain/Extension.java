@@ -18,6 +18,13 @@ public class Extension {
     public Extension() {
 
     }
+
+    public Extension(String name, boolean isChecked, boolean isCustom) {
+        this.name = name;
+        this.isChecked = isChecked;
+        this.isCustom = isCustom;
+    }
+
     public void changeCheckedStatus(){
         if(isChecked) isChecked =false;
         if(!isChecked) isChecked = true;

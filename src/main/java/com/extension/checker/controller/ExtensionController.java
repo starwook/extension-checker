@@ -20,7 +20,6 @@ public class ExtensionController {
     @GetMapping("/extensions/custom")
     public void getCustomExtensions(Model model){
         model.addAttribute("customExtensions",extensionService.getCustomExtensions());
-
     }
     @GetMapping("/extensions/not-custom")
     public void getNotCustomExtensions(Model model){
