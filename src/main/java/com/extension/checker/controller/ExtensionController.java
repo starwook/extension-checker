@@ -5,10 +5,7 @@ import com.extension.checker.service.ExtensionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,28 +14,26 @@ import java.util.List;
 public class ExtensionController {
     private final ExtensionService extensionService;
 
-    @GetMapping("/extensions/custom")
-    public void getCustomExtensions(Model model){
+    @GetMapping("/")
+    public String getCustomExtensions(Model model){
         model.addAttribute("customExtensions",extensionService.getCustomExtensions());
-    }
-    @GetMapping("/extensions/not-custom")
-    public void getNotCustomExtensions(Model model){
         model.addAttribute("notCustomExtensions",extensionService.getNotCustomExtensions());
+        return "index";
     }
     @PostMapping("/extensions/not-custom")
-    public String addNewExtension(String newExtension){
+    public String addNewExtension(@RequestParam("name") String newExtension){
         extensionService.addNewExtension(newExtension);
-        return "redirect:/index";
+        return "redirect:/";
     }
     @PostMapping("/extensions/custom")
     public String changeCheckStatus(String customExtension){
         extensionService.changeCheckStatus(customExtension);
-        return "redirect:/index";
+        return "redirect:/";
     }
     @PostMapping("/extensions/delete")
     public String deleteExtension(String extensionToDelete){
         extensionService.deleteExtension(extensionToDelete);
-        return "redirect:/index";
+        return "redirect:/";
     }
 
 

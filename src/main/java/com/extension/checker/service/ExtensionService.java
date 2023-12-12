@@ -7,12 +7,22 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ExtensionService {
     private final ExtensionRepository extensionRepository;
+
+//    @PostConstruct
+//    public void initialize(){
+//        Extension extension = Extension.builder()
+//                .name("js")
+//                .isCustom(true)
+//                .isChecked(false).build();
+//        extensionRepository.save(extension);
+//    }
     public void addNewExtension(String newExtension){
         List<Extension> extensions = extensionRepository.findAll();
         if(ExtensionValidator.ifAddable(extensions,newExtension)){

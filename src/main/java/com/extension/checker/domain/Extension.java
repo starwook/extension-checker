@@ -1,29 +1,22 @@
 package com.extension.checker.domain;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Entity
 @Builder
 public class Extension {
-    @Id
+    @Id @GeneratedValue
     private Long id;
     private String name;
     private boolean isChecked = false;
     private boolean isCustom = false;
-    public Extension() {
-
-    }
-
-    public Extension(String name, boolean isChecked, boolean isCustom) {
-        this.name = name;
-        this.isChecked = isChecked;
-        this.isCustom = isCustom;
-    }
 
     public void changeCheckedStatus(){
         if(isChecked) isChecked =false;
