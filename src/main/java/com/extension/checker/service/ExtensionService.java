@@ -29,7 +29,7 @@ public class ExtensionService {
             Extension extension = Extension.builder()
                     .name(newExtension)
                     .isChecked(false)
-                    .isCustom(false)
+                    .isCustom(true)
                     .build();
             extensionRepository.save(extension);
         }

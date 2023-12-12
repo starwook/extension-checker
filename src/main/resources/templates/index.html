@@ -3,11 +3,9 @@
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta charset="UTF-8">
-    <title>My Thymeleaf Page</title>
+    <title>파일 확장자 차단</title>
 </head>
 <body>
-<h1>파일 확장자 차단 설정</h1>
-
 <div>
 <!--    <p th:text="'Current time: ' + ${currentDateTime}"></p>-->
 </div>
@@ -19,7 +17,7 @@
     <li th:each="item : ${notCustomExtensions}" >
         <label>
             <span th:text="${item.name}"></span>
-            <input type="checkbox" th:checked="${item.isChecked()}" th:value="${item.name}" name="selectedItems" onchange="sendChangeCheckStatusRequest(this.value)">
+            <input type="checkbox" th:checked="${item.isChecked()}" th:value="${item.name}"  onchange="sendChangeCheckStatusRequest(this.value)">
         </label>
     </li>
 </ul>
@@ -27,10 +25,15 @@
     커스텀 확장자
     <form th:action="@{/extensions/custom}" method="post">
             <input type="text" name ="name" placeholder="빈칸">
-            <button type="submit" onclick="addRow(this)">추가</button>
+            <button type="submit" >추가</button>
     </form>
 </h2>
-<li th:each="item : ${customExtensions}" th:text="${item.name}"></li>
+<li th:each="item : ${customExtensions}">
+    <label>
+        <span th:text="${item.name}"></span>
+        <button th:value = "${item.name}" onclick="sendDeleteExtensionRequest(this.value)">X</button>
+    </label>
+</li>
 
 <script>
     function sendChangeCheckStatusRequest(name) {
@@ -44,6 +47,25 @@
             contentType: false,
             success: function(response) {
                 console.log(response);
+
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+    }
+    function sendDeleteExtensionRequest(name) {
+        const formData = new FormData($('form')[0]);
+        formData.append("extensionToDelete",name)
+        $.ajax({
+            url: '/extensions/delete',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log(response);
+                location.reload();
             },
             error: function(error) {
                 console.error(error);
