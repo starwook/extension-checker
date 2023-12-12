@@ -42,7 +42,10 @@ public class ExtensionService {
     }
     public void changeCheckStatus(String customExtension){
         Extension extension = extensionRepository.getExtensionByNameIs(customExtension);
+        System.out.println(extension.isChecked());
         extension.changeCheckedStatus();
+        System.out.println(extension.isChecked());
+        extensionRepository.save(extension);
     }
     public void deleteExtension(String extensionToDelete){
         Extension extension = extensionRepository.getExtensionByNameIs(extensionToDelete);

@@ -13,7 +13,7 @@ public interface ExtensionRepository extends JpaRepository<Extension,Long> {
     List<Extension> getCustomExtensions();
     @Query("select e from Extension e where e.isCustom = false")
     List<Extension> getNotCustomExtensions();
-    @Query("select e from Extension e where e.name =: name")
+    @Query("select e from Extension e where e.name = :name")
     Extension getExtensionByNameIs(String name);
 
 }

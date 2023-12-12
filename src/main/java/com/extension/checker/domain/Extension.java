@@ -19,11 +19,17 @@ public class Extension {
     private boolean isCustom = false;
 
     public void changeCheckedStatus(){
-        if(isChecked) isChecked =false;
+        if(isChecked){
+            isChecked = false;
+            return;
+        }
         if(!isChecked) isChecked = true;
     }
     public void changeCustomStatus(){
-        if(isCustom) isCustom = false;
+        if(isCustom) {
+            isCustom = false;
+            return;
+        }
         if(!isCustom) isCustom = true;
     }
 

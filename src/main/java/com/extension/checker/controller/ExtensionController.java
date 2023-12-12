@@ -20,14 +20,14 @@ public class ExtensionController {
         model.addAttribute("notCustomExtensions",extensionService.getNotCustomExtensions());
         return "index";
     }
-    @PostMapping("/extensions/not-custom")
+    @PostMapping("/extensions/custom")
     public String addNewExtension(@RequestParam("name") String newExtension){
         extensionService.addNewExtension(newExtension);
         return "redirect:/";
     }
-    @PostMapping("/extensions/custom")
-    public String changeCheckStatus(String customExtension){
-        extensionService.changeCheckStatus(customExtension);
+    @PostMapping("/extensions/notCustom")
+    public String changeCheckStatus(String notCustomExtension){
+        extensionService.changeCheckStatus(notCustomExtension);
         return "redirect:/";
     }
     @PostMapping("/extensions/delete")
