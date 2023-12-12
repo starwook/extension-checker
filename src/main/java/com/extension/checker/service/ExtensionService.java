@@ -14,15 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExtensionService {
     private final ExtensionRepository extensionRepository;
-
-//    @PostConstruct
-//    public void initialize(){
-//        Extension extension = Extension.builder()
-//                .name("js")
-//                .isCustom(true)
-//                .isChecked(false).build();
-//        extensionRepository.save(extension);
-//    }
     public void addNewExtension(String newExtension){
         List<Extension> extensions = extensionRepository.findAll();
         if(ExtensionValidator.ifAddable(extensions,newExtension)){
@@ -42,9 +33,7 @@ public class ExtensionService {
     }
     public void changeCheckStatus(String customExtension){
         Extension extension = extensionRepository.getExtensionByNameIs(customExtension);
-        System.out.println(extension.isChecked());
         extension.changeCheckedStatus();
-        System.out.println(extension.isChecked());
         extensionRepository.save(extension);
     }
     public void deleteExtension(String extensionToDelete){
