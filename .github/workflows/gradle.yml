@@ -68,10 +68,10 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/extension:latest
-            docker tag ${{ secrets.DOCKER_USERNAME }}/extension:latest chagok:extension
+            docker tag ${{ secrets.DOCKER_USERNAME }}/extension:latest extension:latest
             # docker stop $(docker ps -a -q) 
             docker stop extension:latest
-            docker run -d --rm -p 8080:8080 extension:latest
+            docker run -d -p 8080:8080 extension:latest
             # docker run -d --rm -p 6379:6379 --net redis-network --memory 256m redis:latest
             
             docker rm $(docker ps --filter 'status=exited' -a -q)
