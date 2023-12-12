@@ -1,0 +1,73 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11.0.2'
+
+      - name: 💾 Cache Gradle & Spring
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: 🔧 Build Spring server
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build -x test
+          ls -al
+      - name: Docker build
+        run: |
+          cd /home/runner/work/extension-checker/extension-checker
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build  -t app .
+    
+          docker tag app ${{ secrets.DOCKER_USERNAME }}/extension:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/extension:latest
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST}}
+          port: 2022
+          username: root
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/extension:latest
+            docker tag ${{ secrets.DOCKER_USERNAME }}/extension:latest chagok:extension
+            # docker stop $(docker ps -a -q) 
+            docker stop extension:latest
+            docker run -d --rm -p 8080:8080 extension:latest
+            # docker run -d --rm -p 6379:6379 --net redis-network --memory 256m redis:latest
+            
+            docker rm $(docker ps --filter 'status=exited' -a -q)
+            # 실행 중이지 않으 모든 컨테인 삭제
+            docker image prune -a -f
+            # 사용하지않은 모든 이미지 삭제
