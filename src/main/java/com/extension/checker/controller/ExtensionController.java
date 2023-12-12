@@ -3,6 +3,8 @@ package com.extension.checker.controller;
 import com.extension.checker.domain.Extension;
 import com.extension.checker.service.ExtensionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,11 @@ public class ExtensionController {
     public String deleteExtension(String extensionToDelete){
         extensionService.deleteExtension(extensionToDelete);
         return "redirect:/";
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity catcher(Exception e){
+        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 

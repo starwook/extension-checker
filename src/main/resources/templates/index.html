@@ -36,6 +36,26 @@
 </li>
 
 <script>
+    $(document).ready(function(){
+        $("form").on('submit', function(event) {
+            event.preventDefault(); // 폼의 기본 submit 동작을 막음
+            var formData = $(this).serialize(); // 폼 데이터를 직렬화
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: formData,
+                success: function(response) {
+                    location.reload();
+                },
+                error: function(error) {
+                    alert(JSON.stringify(error.responseText));
+                    console.error(error.responseText);
+                    location.reload();
+                }
+            });
+        });
+    });
     function sendChangeCheckStatusRequest(name) {
         const formData = new FormData($('form')[0]);
         formData.append("notCustomExtension",name)
@@ -47,10 +67,9 @@
             contentType: false,
             success: function(response) {
                 console.log(response);
-
             },
             error: function(error) {
-                console.error(error);
+                console.error(error.responseText);
             }
         });
     }
