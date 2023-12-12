@@ -45,7 +45,7 @@ jobs:
           ls -al
       - name: Docker build
         run: |
-          cd /home/runner/work/extension-checker/extension-checker
+          # cd /home/runner/work/extension-checker/extension-checker
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build  -t app .
     
